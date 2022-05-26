@@ -1,6 +1,6 @@
 import "../css/BottomList.css"
 import Grid from '@mui/material/Grid';
-import {RightOutlined, HeartFilled, HeartOutlined} from "@ant-design/icons";
+import {HeartFilled, HeartOutlined, RightOutlined} from "@ant-design/icons";
 import {useState} from "react";
 import {Box} from "@mui/material";
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,19 +13,37 @@ const eatingCategoryItemsList = [
     "Snacks", "Coffee", "Sweet Cake"
 ]
 
-let eatingItems = [{image: "ice1.png", name: "Ice Cream Yellow", sPrice: "10.99", price: "5.99", heart: false},
-    {image: "ice3.png", name: "Ice Cream Pink", sPrice: "12.99", price: "6.99", heart: false},
-    {image: "ice2.png", name: "Ice Cream Blue", sPrice: "8.99", price: "4.99", heart: false},];
+// let eatingItems = [{image: "ice1.png", name: "Ice Cream Yellow", sPrice: "10.99", price: "5.99", heart: false},
+//     {image: "ice3.png", name: "Ice Cream Pink", sPrice: "12.99", price: "6.99", heart: false},
+//     {image: "ice2.png", name: "Ice Cream Blue", sPrice: "8.99", price: "4.99", heart: false},];
 
 export default function BottomList() {
 
     const [eatingCategorySelected, setEatingCategorySelected] = useState("Ice Cream");
+    const [eatingItems, setEatingItems] = useState([{id:1,image: "ice1.png", name: "Ice Cream Yellow", sPrice: "10.99", price: "5.99", heart: false},
+        {id:2,image: "ice3.png", name: "Ice Cream Pink", sPrice: "12.99", price: "6.99", heart: false},
+        {id:3,image: "ice2.png", name: "Ice Cream Blue", sPrice: "8.99", price: "4.99", heart: false}]);
 
     const eatingCategoryClicked = (value) => {
         setEatingCategorySelected(value);
         shuffleArray(eatingItems);
     };
 
+    const updatingHearts = (id) => {
+
+        const newList = eatingItems.map((item) => {
+            if (item.id === id) {
+                return {
+                    ...item,
+                    heart: !item.heart,
+                };
+            }
+
+            return item;
+        });
+
+        setEatingItems(newList)
+    };
     return (
         <div>
             <div id={"check-the-reward-div"} onClick={()=>{toast("Clicked")}}>
@@ -33,7 +51,6 @@ export default function BottomList() {
                     <Grid item xs={11}>
                         <p id={"check-the-reward-p"}>
                             Check the reward in this resto
-
                         </p>
                         <p id={"reward-p"}>
                             16 Reward
@@ -83,9 +100,9 @@ export default function BottomList() {
                                 </Grid>
                                 <Grid item xs>
                                     <div onClick={() => {
-                                        eatingItems[index].heart = !eatingItems[index].heart;
+                                        updatingHearts(item.id);
                                     }}>
-                                        {item.heart === false ?
+                                        {eatingItems[index].heart === false ?
                                             <HeartOutlined/> :
                                             <HeartFilled style={{color: "#FA5D5D"}}/>}
                                     </div>
